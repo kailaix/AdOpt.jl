@@ -170,7 +170,7 @@ function solve_tr_subproblem!(gr,
 
         if !hard_case
             # Algorithim 4.3 of N&W (2006), with s insted of p_l for consistency
-            # with Optim.jl
+            # with ADOPT.jl
 
             reached_solution = false
             for iter in 1:max_iters

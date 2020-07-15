@@ -16,7 +16,7 @@ promote_objtype(method::IPNewton, x, autodiff::Symbol, inplace::Bool, f, g, h) =
 # Interior-point Newton
 ## Constructor
 ```jl
-IPNewton(; linesearch::Function = Optim.backtrack_constrained_grad,
+IPNewton(; linesearch::Function = ADOPT.backtrack_constrained_grad,
          μ0::Union{Symbol,Number} = :auto,
          show_linesearch::Bool = false)
 ```
@@ -26,7 +26,7 @@ to `:auto` to let the algorithm decide its value, see `initialize_μ_λ!`.
 
 *Note*: For constrained optimization problems, we recommend
 always enabling `allow_f_increases` and `successive_f_tol` in the options passed to `optimize`.
-The default is set to `Optim.Options(allow_f_increases = true, successive_f_tol = 2)`.
+The default is set to `ADOPT.Options(allow_f_increases = true, successive_f_tol = 2)`.
 
 As of February 2018, the line search algorithm is specialised for constrained
 interior-point methods. In future we hope to support more algorithms from
@@ -38,7 +38,7 @@ nonlinear, constrained optimization problems. See Nocedal and Wright (Ch. 19, 20
 interior-point methods for constrained optimization.
 
 ## References
-The algorithm was [originally written by Tim Holy](https://github.com/JuliaNLSolvers/Optim.jl/pull/303) (@timholy, tim.holy@gmail.com).
+The algorithm was [originally written by Tim Holy](https://github.com/JuliaNLSolvers/ADOPT.jl/pull/303) (@timholy, tim.holy@gmail.com).
 
  - J Nocedal, SJ Wright (2006), Numerical optimization, second edition. Springer.
  - A Wächter, LT Biegler (2006), On the implementation of an interior-point filter line-search algorithm for large-scale nonlinear programming. Mathematical Programming 106 (1), 25-57.
@@ -69,7 +69,7 @@ mutable struct IPNewtonState{T,Tx} <: AbstractBarrierState
     constr_c::Vector{T}   # value of the user-supplied constraints at x
     constr_J::Matrix{T}   # value of the user-supplied Jacobian at x
     ev::T                 # equality violation, ∑_i λ_Ei (c*_i - c_i)
-    Optim.@add_linesearch_fields() # x_ls and alpha
+    ADOPT.@add_linesearch_fields() # x_ls and alpha
     b_ls::BarrierLineSearchGrad{T}
     gtilde::Tx
     Htilde               # Positive Cholesky factorization of H from PositiveFactorizations.jl
@@ -159,7 +159,7 @@ function initial_state(method::IPNewton, options, d::TwiceDifferentiable, constr
         constr_c,
         constr_J,
         T(NaN),
-        Optim.@initial_linesearch()..., # Maintain a cache for line search results in state.lsr
+        ADOPT.@initial_linesearch()..., # Maintain a cache for line search results in state.lsr
         b_ls,
         gtilde,
         0)

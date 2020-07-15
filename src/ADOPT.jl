@@ -1,18 +1,18 @@
 """
-# Optim.jl
-Welcome to Optim.jl!
+# ADOPT.jl
+Welcome to ADOPT.jl!
 
-Optim.jl is a package used to solve continuous optimization problems. It is
+ADOPT.jl is a package used to solve continuous optimization problems. It is
 written in Julia for Julians to help take advantage of arbitrary number types,
 fast computation, and excellent automatic differentiation tools.
 
 ## REPL help
-`?` followed by an algorithm name (`?BFGS`), constructors (`?Optim.Options`)
+`?` followed by an algorithm name (`?BFGS`), constructors (`?ADOPT.Options`)
 prints help to the terminal.
 
 ## Documentation
 Besides the help provided at the REPL, it is possible to find help and general
-documentation online at http://julianlsolvers.github.io/Optim.jl/stable/ .
+documentation online at http://julianlsolvers.github.io/ADOPT.jl/stable/ .
 """
 module ADOPT
 using Compat
@@ -58,6 +58,7 @@ import SparseArrays: AbstractSparseMatrix
 
 # exported functions and types
 export optimize, maximize, # main function
+       Options,
 
        # Re-export objective types from NLSolversBase
        NonDifferentiable,
@@ -82,6 +83,7 @@ export optimize, maximize, # main function
        GradientDescent,
        BFGS,
        LBFGS,
+       Adam,
 
        ### Conjugate gradient
        ConjugateGradient,
@@ -143,6 +145,7 @@ include("multivariate/solvers/zeroth_order/particle_swarm.jl")
 include("multivariate/solvers/first_order/gradient_descent.jl")
 include("multivariate/solvers/first_order/bfgs.jl")
 include("multivariate/solvers/first_order/l_bfgs.jl")
+include("multivariate/solvers/first_order/adam.jl")
 
 ## Acceleration methods
 include("multivariate/solvers/first_order/accelerated_gradient_descent.jl")

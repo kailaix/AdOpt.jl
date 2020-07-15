@@ -25,17 +25,17 @@ function maximize(f, x0::AbstractArray; kwargs...)
     fmax = x->-f(x)
     MaximizationWrapper(optimize(fmax, x0; kwargs...))
 end
-function maximize(f, x0::AbstractArray, method::AbstractOptimizer, options = Optim.Options(); kwargs...)
+function maximize(f, x0::AbstractArray, method::AbstractOptimizer, options = ADOPT.Options(); kwargs...)
     fmax = x->-f(x)
     MaximizationWrapper(optimize(fmax, x0, method, options; kwargs...))
 end
-function maximize(f, g, x0::AbstractArray, method::AbstractOptimizer, options = Optim.Options(); kwargs...)
+function maximize(f, g, x0::AbstractArray, method::AbstractOptimizer, options = ADOPT.Options(); kwargs...)
     fmax = x->-f(x)
     gmax = (G,x)->(g(G,x); G.=-G)
     MaximizationWrapper(optimize(fmax, gmax, x0, method, options; kwargs...))
 end
 
-function maximize(f, g, h, x0::AbstractArray, method::AbstractOptimizer, options = Optim.Options(); kwargs...)
+function maximize(f, g, h, x0::AbstractArray, method::AbstractOptimizer, options = ADOPT.Options(); kwargs...)
     fmax = x->-f(x)
     gmax = (G,x)->(g(G,x); G.=-G)
     hmax = (H,x)->(h(G,x); H.=-H)

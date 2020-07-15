@@ -38,9 +38,9 @@ show_every::Int = 1,
 callback = nothing,
 time_limit = NaN
 ```
-See http://julianlsolvers.github.io/Optim.jl/stable/#user/config/
+See http://julianlsolvers.github.io/ADOPT.jl/stable/#user/config/
 """
-struct Options{T, TCallback}
+mutable struct Options{T, TCallback}
     x_abstol::T
     x_reltol::T
     f_abstol::T
@@ -131,7 +131,7 @@ function Options(;
         Int(show_every), callback, Float64(time_limit))
 end
 
-function Base.show(io::IO, o::Optim.Options)
+function Base.show(io::IO, o::ADOPT.Options)
     for k in fieldnames(typeof(o))
         v = getfield(o, k)
         if v isa Nothing
