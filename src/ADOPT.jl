@@ -15,6 +15,7 @@ Besides the help provided at the REPL, it is possible to find help and general
 documentation online at http://julianlsolvers.github.io/ADOPT.jl/stable/ .
 """
 module ADOPT
+using ADCME
 using Compat
 using NLSolversBase          # for shared infrastructure in JuliaNLSolvers
 
@@ -58,6 +59,7 @@ import SparseArrays: AbstractSparseMatrix
 
 # exported functions and types
 export optimize, maximize, # main function
+       mpi_optimize,
        Options,
 
        # Re-export objective types from NLSolversBase
@@ -216,4 +218,5 @@ include("multivariate/solvers/constrained/ipnewton/utilities/trace.jl")
 # Maximization convenience wrapper
 include("maximize.jl")
 
+include("mpi_optimize.jl")
 end
