@@ -10,6 +10,7 @@ function g!(G, x)
 end
 
 initial_x = zeros(2)
-
-result = optimize(f, g!, initial_x, LBFGS())
+options = Options()
+options.show_trace = true
+result = optimize(f, g!, initial_x, LBFGS(), options)
 @test result.minimizer ≈ ones(2)

@@ -14,8 +14,9 @@ end
 initial_x = zeros(2)
 
 options = Options()
-options.iterations = 1000
-options.allow_f_increases = true
+options.iterations = 10000
+options.show_trace = true
+options.show_every = 1000
 
 result = optimize(f, g!, initial_x, Adam(0.1), options)
 @test result.minimizer ≈ ones(2)
