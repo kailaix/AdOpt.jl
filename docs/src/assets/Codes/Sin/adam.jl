@@ -26,7 +26,7 @@ opt = AdamOptimizer().minimize(loss)
 sess = Session(); init(sess)
 
 losses = Float64[]
-for i = 1:2000
+for i = 1:10000
     _, l = run(sess, [opt, loss])
     push!(losses, l )
 end

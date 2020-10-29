@@ -1,6 +1,16 @@
+SEED = 233
+if length(ARGS)>=1
+    SEED = parse(Int64, ARGS[1])
+end
+@info "seed = $SEED"
+MODE = "adam"
+
+if isfile("data/result$MODE/data$SEED.jld2")
+    exit()
+end
+
 include("inverse.jl")
 
-MODE = "adam"
 
 make_directory("data/result$MODE")
 
@@ -15,13 +25,13 @@ for i = 1:1000
 
 end
 
-THETA1, THETA2 = run(sess, [θ1, θ2])
+THETA = run(sess, θ1)
 
-@save "data/result$MODE/data.jld2" THETA1 THETA2 losses
+@save "data/result$MODE/data$SEED.jld2" THETA losses
 
 close("all")
 semilogy(losses)
-savefig("data/result$MODE/loss.png")
+savefig("data/result$MODE/loss$SEED.png")
 
 E_, nu_ = run(sess, [E, nu])
 close("all")
@@ -30,4 +40,4 @@ subplot(121)
 visualize_scalar_on_gauss_points(E_, mmesh)
 subplot(122)
 visualize_scalar_on_gauss_points(nu_, mmesh)
-savefig("data/result$MODE/final.png")
+savefig("data/result$MODE/final$SEED.png")

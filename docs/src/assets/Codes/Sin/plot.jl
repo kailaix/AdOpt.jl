@@ -27,6 +27,9 @@ semilogy(losses, label = "BFGS")
 @load "data/lbfgs$SEED.jld2" losses
 semilogy(losses, label = "LBFGS")
 
+@load "data/ncg$SEED.jld2" losses
+semilogy(losses, label = "NCG")
+
 legend()
 xlabel("Iterations")
 ylabel("Loss")

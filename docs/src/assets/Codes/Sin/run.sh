@@ -3,6 +3,7 @@ do
 julia adam.jl $SEED &
 julia bfgs.jl $SEED &
 julia lbfgs.jl $SEED &
+julia ncg.jl $SEED &
 wait 
 julia plot.jl $SEED 
 done 

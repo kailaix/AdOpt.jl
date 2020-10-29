@@ -18,6 +18,7 @@ module AdOpt
     include("optimizers/optim.jl")
     include("optimizers/bfgs.jl")
     include("optimizers/lbfgs.jl")
+    include("optimizers/ncg.jl")
     include("api.jl")
 
 end 

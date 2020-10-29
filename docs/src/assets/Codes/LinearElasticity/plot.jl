@@ -4,6 +4,9 @@ if length(ARGS)>=1
 end
 @info "seed = $SEED"
 
+if isfile("data/loss$SEED.png")
+    exit()
+end
 
 using PyPlot 
 using ADCME
@@ -44,7 +47,7 @@ semilogy(losses, label = "LBFGS")
 xlabel("Iterations")
 ylabel("Loss")
 legend()
-savefig("data/loss_le.png")
+savefig("data/loss$SEED.png")
 
 
 

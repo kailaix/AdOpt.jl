@@ -1,3 +1,13 @@
+SEED = 233
+if length(ARGS)>=1
+    SEED = parse(Int64, ARGS[1])
+end
+@info "seed = $SEED"
+
+if isfile("data/loss$SEED.png")
+    exit()
+end
+
 using ADCME
 using PyPlot 
 using JLD2
@@ -7,11 +17,7 @@ using PyPlot
 using JLD2
 using Statistics 
 
-SEED = 233
-if length(ARGS)>=1
-    SEED = parse(Int64, ARGS[1])
-end
-@info "seed = $SEED"
+
 
 function kappa(x, y)
     return 2 + exp(10x) - (10y)^2

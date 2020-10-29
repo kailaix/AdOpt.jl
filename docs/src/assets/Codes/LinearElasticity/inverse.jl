@@ -21,7 +21,7 @@ rhs = compute_fem_traction_term(t1, t2, right, mmesh)
 
 x = gauss_nodes(mmesh)
 
-using Random; Random.seed!(2333)
+using Random; Random.seed!(SEED)
 θ1 = Variable(ae_init([2,20, 20, 20, 1]))
 E = abs(squeeze(fc(x, [20, 20, 20, 1], θ1)) + 2.0)
 nu = constant(0.3 * ones(get_ngauss(mmesh)))
