@@ -3,6 +3,7 @@ using ADCME
 using LinearAlgebra
 using LineSearches
 using JLD2 
+using AdOpt
 
 using Random; Random.seed!(233)
 

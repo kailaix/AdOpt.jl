@@ -2,6 +2,7 @@ using ADCME
 using JLD2
 using Optim
 using Random; Random.seed!(233)
+using AdOpt
 
 x = rand(10)
 y = sin.(x)

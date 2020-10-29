@@ -3,6 +3,7 @@ using ADCME
 using LinearAlgebra
 using LineSearches
 using JLD2 
+using AdOpt
 
 using Random; Random.seed!(233)
 
@@ -15,6 +16,6 @@ loss = sum((z-y)^2)
 sess = Session(); init(sess)
 losses = Optimize!(sess, loss, BFGSOptimizer(), 2000)
 
-
+make_directory("data")
 @save "data/bfgs.jld2" losses 
 
