@@ -17,4 +17,6 @@ for i = 1:2000
     _, l = run(sess, [opt, loss])
     push!(losses, l )
 end
+
+make_directory("data")
 @save "data/adam.jld2" losses 
