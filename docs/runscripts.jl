@@ -16,6 +16,3 @@ cd(@__DIR__)
 cd("src/assets/Codes/LinearElasticity/")
 run(`sh run.sh`)
 cd(@__DIR__)
-
-run(`git commit -m "collect results $(string(today()))"`)
-run(`git push`)
