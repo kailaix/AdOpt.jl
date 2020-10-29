@@ -1,11 +1,16 @@
 using ADCME
 using JLD2
 using Optim
-using Random; Random.seed!(233)
 using AdOpt
 
-x = rand(10)
-y = sin.(x)
+SEED = 233
+if length(ARGS)==1
+    global SEED = parse(Int64, ARGS[1])
+end
+using Random; Random.seed!(SEED)
+
+x = LinRange(0, 1, 500)|>Array
+y = sin.(10π*x)
 θ = Variable(ae_init([1,20,20,20,1]))
 z = squeeze(fc(x, [20, 20, 20, 1], θ))
 loss = sum((z-y)^2)
