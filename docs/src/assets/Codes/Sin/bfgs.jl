@@ -22,5 +22,5 @@ sess = Session(); init(sess)
 losses = Optimize!(sess, loss, BFGSOptimizer(), 2000)
 
 make_directory("data")
-@save "data/bfgs.jld2" losses 
+@save "data/bfgs$SEED.jld2" losses 
 

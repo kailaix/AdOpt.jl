@@ -25,4 +25,4 @@ for i = 1:2000
 end
 
 make_directory("data")
-@save "data/adam.jld2" losses 
+@save "data/adam$SEED.jld2" losses 

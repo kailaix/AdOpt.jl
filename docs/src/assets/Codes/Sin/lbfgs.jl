@@ -21,5 +21,5 @@ loss = sum((z-y)^2)
 sess = Session(); init(sess)
 losses = Optimize!(sess, loss, LBFGSOptimizer(), 2000)
 make_directory("data")
-@save "data/lbfgs.jld2" losses 
+@save "data/lbfgs$SEED.jld2" losses 
 
