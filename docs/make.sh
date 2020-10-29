@@ -1,0 +1,1 @@
+sh src/assets/Codes/Sin/run.sh 

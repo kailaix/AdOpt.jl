@@ -1,0 +1,45 @@
+name: QuickBuild
+
+on:
+  schedule:
+    - cron: '00 00 * * *'
+  push:
+    branches:
+      - '*'
+    tags: '*'
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@latest
+        with:
+          version: 1.4
+      - uses: julia-actions/julia-buildpkg@latest
+  MacOSX:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@latest
+        with:
+          version: 1.3
+      - uses: julia-actions/julia-buildpkg@latest
+  Windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@latest
+        with:
+          version: 1.4
+      - name: Chocolatey Action
+        uses: crazy-max/ghaction-chocolatey@v1.2.2     
+        with:
+          args: install visualstudio2017community
+      - name: Chocolatey Action
+        uses: crazy-max/ghaction-chocolatey@v1.2.2     
+        with:
+          args: install visualstudio2017-workload-nativedesktop
+      - uses: julia-actions/julia-buildpkg@latest
+
+
