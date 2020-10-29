@@ -1,3 +1,12 @@
+
+SEED = 233
+if length(ARGS)==1
+    global SEED = parse(Int64, ARGS[1])
+end
+if isfile("data/bfgs$SEED.jld2")
+    exit()
+end
+
 using Revise 
 using ADCME 
 using LinearAlgebra
@@ -6,10 +15,7 @@ using JLD2
 using AdOpt
 
 
-SEED = 233
-if length(ARGS)==1
-    global SEED = parse(Int64, ARGS[1])
-end
+
 using Random; Random.seed!(SEED)
 
 x = LinRange(0, 1, 500)|>Array

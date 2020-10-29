@@ -1,4 +1,4 @@
-for SEED in 1 2 3 4 5
+for SEED in  2 23 233 2333 23333
 do 
 julia adam.jl $SEED &
 julia bfgs.jl $SEED &
