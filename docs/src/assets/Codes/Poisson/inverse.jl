@@ -13,11 +13,7 @@ end
 
 mmesh = Mesh(joinpath(PDATA, "twoholes_large.stl"))
 
-SEED = 233
-if length(ARGS)>=1
-    SEED = parse(Int64, ARGS[1])
-end
-@info "seed = $SEED"
+
 
 using Random; Random.seed!(SEED)
 idx = rand(1:length(SOL), length(SOL)÷5)

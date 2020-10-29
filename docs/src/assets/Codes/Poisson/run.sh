@@ -1,7 +1,7 @@
 ulimit -u 10000
 
 julia forward.jl 
-for seed in 1 2 3 4
+for seed in 2 23 233 2333 23333
 do 
     julia bfgs.jl $seed &
     julia bfgs_adam.jl $seed &

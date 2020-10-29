@@ -1,3 +1,13 @@
+SEED = 233
+if length(ARGS)>=1
+    SEED = parse(Int64, ARGS[1])
+end
+@info "seed = $SEED"
+
+if isfile("data/adam$SEED.jld2")
+    exit()
+end
+
 include("inverse.jl")
 
 opt = AdamOptimizer().minimize(loss)
