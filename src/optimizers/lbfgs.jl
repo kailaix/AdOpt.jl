@@ -4,7 +4,7 @@ export LBFGSOptimizer
     max_iter::Int64 = 15000
     callback::Union{Missing, Function} = missing
     g_tol::Float64 = 1e-15
-    m::Int64 = 10
+    m::Int64 = 50
 end
 
 function setOptions!(opt::LBFGSOptimizer; 
@@ -65,9 +65,8 @@ function (opt::LBFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64, 1})
     xnew = x + α * d 
     @. G_ = G
     g!(G, xnew)
-    fnew = f(xnew)
+    f__ = f(xnew)
     x, x_ = xnew, x 
-    f__, f_ = fnew, f__ 
     push!(losses, f__)
     pushfirst!(Ss, x - x_ )
     pushfirst!(Ys, G - G_ )
@@ -82,19 +81,18 @@ function (opt::LBFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64, 1})
             opt.callback(x, i, f__)
         end
 
-        dx = -G 
+        d = -G 
         for j = 1:length(Ss)
-            αs[j] = Ss[j]'*dx/(Ys[j]'*Ss[j])
-            dx -= αs[j]*Ys[j]
+            αs[j] = Ss[j]'*d/(Ys[j]'*Ss[j])
+            d -= αs[j]*Ys[j]
         end
-        dx = Ys[1]'*Ss[1]/(Ys[1]'*Ys[1]) * dx
+        d = Ys[1]'*Ss[1]/(Ys[1]'*Ys[1]) * d
         for j = length(Ss):-1:1
-            β = Ys[j]'*dx / (Ys[j]'*Ss[j])
-            dx += (αs[j] - β) * Ss[j]
+            β = Ys[j]'*d / (Ys[j]'*Ss[j])
+            d += (αs[j] - β) * Ss[j]
         end
         
         # line search 
-        d = dx
         φ = α->f(x + α*d)
         dφ = α->begin 
             g = zeros(n)
@@ -102,9 +100,9 @@ function (opt::LBFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64, 1})
             g'*d
         end
         φdφ(x) = φ(x), dφ(x)
-        φ0 = φ(0.0)
+        φ0 = f__
         dφ0 = dφ(0.0)
-        α0 = min(10.0, 10α)
+        α0 = min(1.0, 10α)
         res = BackTracking()(φ, dφ, φdφ, α0, φ0,dφ0)
         α = res[1]
 
@@ -113,13 +111,11 @@ function (opt::LBFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64, 1})
             return losses 
         end
 
-
-        xnew = x + α * dx
+        xnew = x + α * d
         @. G_ = G
         g!(G, xnew)
-        fnew = f(xnew)
+        f__ = f(xnew)
         x, x_ = xnew, x 
-        f__, f_ = fnew, f__
         
         # check for convergence 
         if norm(G)<opt.g_tol || isnan(f__)

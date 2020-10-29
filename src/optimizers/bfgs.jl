@@ -88,7 +88,7 @@ function (opt::BFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
             g'*d
         end
         φdφ(x) = φ(x), dφ(x)
-        φ0 = φ(0.0)
+        φ0 = f__
         dφ0 = dφ(0.0)
         
         α0 = min(10.0, 10α)
