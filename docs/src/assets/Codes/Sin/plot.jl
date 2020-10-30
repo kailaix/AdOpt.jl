@@ -3,9 +3,6 @@ SEED = 233
 if length(ARGS)==1
     global SEED = parse(Int64, ARGS[1])
 end
-if isfile("data/sinloss$SEED.png")
-    exit()
-end
 
 using PyPlot 
 using JLD2
@@ -29,6 +26,13 @@ semilogy(losses, label = "LBFGS")
 
 @load "data/ncg$SEED.jld2" losses
 semilogy(losses, label = "NCG")
+
+@load "data/ncgbfgs$SEED.jld2" losses
+semilogy(losses, label = "NCGBFGS")
+
+@load "data/adaptive_bfgs$SEED.jld2" losses
+semilogy(losses, label = "Adaptive BFGS")
+
 
 legend()
 xlabel("Iterations")

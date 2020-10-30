@@ -3,9 +3,11 @@ SEED = 233
 if length(ARGS)==1
     global SEED = parse(Int64, ARGS[1])
 end
-if isfile("data/bfgs$SEED.jld2")
+if isfile("data/block_bfgs$SEED.jld2")
     exit()
 end
+
+@info "SEED = $SEED"
 
 using Revise 
 using ADCME 
@@ -13,7 +15,6 @@ using LinearAlgebra
 using LineSearches
 using JLD2 
 using AdOpt
-using PyPlot
 
 
 
@@ -26,15 +27,8 @@ z = squeeze(fc(x, [20, 20, 20, 1], θ))
 loss = sum((z-y)^2)
 
 sess = Session(); init(sess)
-opt = BFGSOptimizer()
-losses = Optimize!(sess, loss, opt, 2000)
-angles = opt.angles
+losses = Optimize!(sess, loss, BlockBFGSOptimizer(), 2000)
+
 make_directory("data")
-figure(figsize = (4,10))
-subplot(211)
-semilogy(angles)
-subplot(212)
-semilogy(losses)
-savefig("data/bfgs$SEED.png")
-@save "data/bfgs$SEED.jld2" losses 
+@save "data/block_bfgs$SEED.jld2" losses 
 

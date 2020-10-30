@@ -8,6 +8,6 @@ do
     julia bfgs.jl $SEED &
     julia lbfgs.jl $SEED &
     julia lbfgs_adam.jl $SEED &
+    julia adaptive_bfgs.jl $SEED &
     wait 
-    julia plot.jl $SEED 
 done 

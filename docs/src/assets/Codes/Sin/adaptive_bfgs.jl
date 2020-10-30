@@ -3,7 +3,7 @@ SEED = 233
 if length(ARGS)==1
     global SEED = parse(Int64, ARGS[1])
 end
-if isfile("data/bfgs$SEED.jld2")
+if isfile("data/adaptive_bfgs$SEED.jld2")
     exit()
 end
 
@@ -26,7 +26,7 @@ z = squeeze(fc(x, [20, 20, 20, 1], θ))
 loss = sum((z-y)^2)
 
 sess = Session(); init(sess)
-opt = BFGSOptimizer()
+opt = AdaptiveBFGSOptimizer()
 losses = Optimize!(sess, loss, opt, 2000)
 angles = opt.angles
 make_directory("data")
@@ -35,6 +35,6 @@ subplot(211)
 semilogy(angles)
 subplot(212)
 semilogy(losses)
-savefig("data/bfgs$SEED.png")
-@save "data/bfgs$SEED.jld2" losses 
+# savefig("data/adaptive_bfgs$SEED.png")
+@save "data/adaptive_bfgs$SEED.jld2" losses 
 

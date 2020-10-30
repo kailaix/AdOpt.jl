@@ -4,6 +4,8 @@ export BFGSOptimizer
     max_iter::Int64 = 15000
     callback::Union{Missing, Function} = missing
     g_tol::Float64 = 1e-15
+    damping::Float64 = 0.0
+    angles::Array{Float64} = []
 end
 
 function setOptions!(opt::BFGSOptimizer; 
@@ -53,7 +55,7 @@ function (opt::BFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
     res = BackTracking()(φ, dφ, φdφ, α0, φ0,dφ0)
     α = res[1]
 
-
+    push!(opt.angles, -G'*d/norm(G)/norm(d))
     xnew = x + α * d 
     @. G_ = G
     g!(G, xnew)
@@ -62,6 +64,7 @@ function (opt::BFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
     f__, f_ = fnew, f__ 
     d_ = d
     push!(losses, f__)
+    
 
     
     # from second step: BFGS
@@ -77,7 +80,11 @@ function (opt::BFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
         s = x - x_ 
         y = G - G_ 
 
-        B = (I - s*y'/(y'*s)) * B * (I - y*s'/(y'*s)) + s*s'/(y'*s)
+        if opt.damping>0
+            B = (1-opt.damping) * (I - s*y'/(y'*s)) * B * (I - y*s'/(y'*s)) + s*s'/(y'*s)    
+        else
+            B = (I - s*y'/(y'*s)) * B * (I - y*s'/(y'*s)) + s*s'/(y'*s)
+        end
         d = -B*G 
         
         # line search 
@@ -101,7 +108,7 @@ function (opt::BFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
             return losses 
         end
 
-
+        push!(opt.angles, -G'*d/norm(G)/norm(d))
         xnew = x + α * d
         @. G_ = G
         g!(G, xnew)

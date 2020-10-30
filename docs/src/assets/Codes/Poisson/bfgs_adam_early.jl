@@ -4,13 +4,13 @@ if length(ARGS)>=1
 end
 @info "seed = $SEED"
 
-if isfile("data/bfgs_adam$SEED.jld2")
+if isfile("data/bfgs_adam_early$SEED.jld2")
     exit()
 end
 
 include("inverse.jl")
 
-N = 300
+N = 50
 
 opt = AdamOptimizer().minimize(loss)
 g = tf.convert_to_tensor(gradients(loss, θ))
@@ -45,7 +45,7 @@ semilogy(losses)
 savefig("data/bfgs_angle$SEED.png")
 
 
-@save "data/bfgs_adam$SEED.jld2" losses w 
+@save "data/bfgs_adam_early$SEED.jld2" losses w 
 
 figure(figsize = (10, 4))
 subplot(121)
@@ -53,4 +53,4 @@ semilogy(losses)
 xlabel("Iterations"); ylabel("Loss")
 subplot(122)
 visualize_scalar_on_gauss_points(run(sess, Kappa), mmesh)
-savefig("data/bfgs_adam$SEED.png")
+savefig("data/bfgs_adam_early$SEED.png")

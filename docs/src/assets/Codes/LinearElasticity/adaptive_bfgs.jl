@@ -3,7 +3,7 @@ if length(ARGS)>=1
     SEED = parse(Int64, ARGS[1])
 end
 @info "seed = $SEED"
-MODE = "bfgs"
+MODE = "adaptive_bfgs"
 
 if isfile("data/result$MODE/data$SEED.jld2")
     exit()
@@ -13,7 +13,7 @@ include("inverse.jl")
 
 make_directory("data/result$MODE")
 
-losses = Optimize!(sess, loss, BFGSOptimizer(), 500)
+losses = Optimize!(sess, loss, AdaptiveBFGSOptimizer(), 500)
 
 THETA = run(sess, θ1)
 
