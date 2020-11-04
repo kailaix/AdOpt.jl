@@ -4,13 +4,13 @@ if length(ARGS)>=1
 end
 @info "seed = $SEED"
 
-if isfile("data/lbfgs_adam$SEED.jld2")
-    exit()
-end
+# if isfile("data/lbfgs_adam$SEED.jld2")
+#     exit()
+# end
 
 include("inverse.jl")
 
-N = 300
+N = 50
 
 opt = AdamOptimizer().minimize(loss)
 g = tf.convert_to_tensor(gradients(loss, θ))

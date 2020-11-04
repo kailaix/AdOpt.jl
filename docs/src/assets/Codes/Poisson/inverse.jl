@@ -19,7 +19,7 @@ using Random; Random.seed!(SEED)
 idx = rand(1:length(SOL), length(SOL)÷5)
 xy = gauss_nodes(mmesh)
 θ = Variable(fc_init([2,20,20,20,1]))
-Kappa = squeeze(fc(xy, [20, 20, 20, 1], θ)) + 1.0
+Kappa = squeeze(fc(xy, [20, 20, 20, 1], θ)) + 2.0
 F = eval_f_on_gauss_pts(f, mmesh)
 L = compute_fem_laplace_matrix1(Kappa, mmesh)
 RHS = compute_fem_source_term1(F, mmesh)

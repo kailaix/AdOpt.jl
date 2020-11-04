@@ -1,16 +1,16 @@
-SEED = 233
+SEED = 2
 if length(ARGS)>=1
     SEED = parse(Int64, ARGS[1])
 end
 @info "seed = $SEED"
 
-if isfile("data/bfgs_adam$SEED.jld2")
-    exit()
-end
+# if isfile("data/bfgs_adam$SEED.jld2")
+#     exit()
+# end
 
 include("inverse.jl")
 
-N = 300
+N = 50
 
 opt = AdamOptimizer().minimize(loss)
 g = tf.convert_to_tensor(gradients(loss, θ))
@@ -45,7 +45,8 @@ semilogy(losses)
 savefig("data/bfgs_angle$SEED.png")
 
 
-@save "data/bfgs_adam$SEED.jld2" losses w 
+angles = opt.angles
+@save "data/bfgs_adam$SEED.jld2" losses w  angles
 
 figure(figsize = (10, 4))
 subplot(121)

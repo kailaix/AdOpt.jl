@@ -23,7 +23,7 @@ function (opt::BFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
     x = x0 
     α0 = 1.0
 
-    losses = Float64[]
+    
 
     max_iter = opt.max_iter
     
@@ -40,6 +40,7 @@ function (opt::BFGSOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
     # first step: gradient descent 
     g!(G, x)
     f__ = f(x)
+    losses = [f__]
     
     # the first step is a backtracking linesearch 
     d = -G 

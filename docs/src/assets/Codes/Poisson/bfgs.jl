@@ -1,12 +1,12 @@
-SEED = 233
+SEED = 23
 if length(ARGS)>=1
     SEED = parse(Int64, ARGS[1])
 end
 @info "seed = $SEED"
 
-if isfile("data/bfgs$SEED.jld2")
-    exit()
-end
+# if isfile("data/bfgs$SEED.jld2")
+#     exit()
+# end
 
 include("inverse.jl")
 

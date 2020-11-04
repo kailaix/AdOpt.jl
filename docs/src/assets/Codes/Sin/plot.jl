@@ -30,8 +30,8 @@ semilogy(losses, label = "NCG")
 @load "data/ncgbfgs$SEED.jld2" losses
 semilogy(losses, label = "NCGBFGS")
 
-@load "data/adaptive_bfgs$SEED.jld2" losses
-semilogy(losses, label = "Adaptive BFGS")
+@load "data/modified_bfgs$SEED.jld2" losses
+semilogy(losses, label = "Modified BFGS")
 
 
 legend()

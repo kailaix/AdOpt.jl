@@ -23,7 +23,7 @@ function (opt::ADAMOptimizer)(f::Function, g!::Function, x0::Array{Float64,1})
     G = zeros(length(x))
     ϵ = 1e-8
     βp = β
-    losses = Float64[]
+    losses = [f(x)]
     for i = 1:opt.max_iter
         if ADCME.options.training.verbose
             println("=============== STEP $i ===============")

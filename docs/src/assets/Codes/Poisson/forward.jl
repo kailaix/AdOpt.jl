@@ -1,6 +1,4 @@
-if isfile("data/fwd.jld2")
-    exit()
-end
+
 
 using AdFem
 using ADCME

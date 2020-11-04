@@ -4,16 +4,16 @@ if length(ARGS)>=1
 end
 @info "seed = $SEED"
 
-if isfile("data/adam$SEED.jld2")
-    exit()
-end
+# if isfile("data/adam$SEED.jld2")
+#     exit()
+# end
 
 include("inverse.jl")
 
 opt = AdamOptimizer().minimize(loss)
 sess = Session(); init(sess)
 
-losses = Float64[]
+losses = Float64[run(sess, loss)]
 for i = 1:1000
     _, l = run(sess, [opt, loss])
     push!(losses, l)

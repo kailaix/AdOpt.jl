@@ -4,8 +4,9 @@ export ModifiedBFGSOptimizer
     max_iter::Int64 = 15000
     callback::Union{Missing, Function} = missing
     eta::Float64 = 0.001
-    beta::Tuple{Float64, Float64} =  (0.9, 0.999)
+    beta::Tuple{Float64, Float64} =  (0.001, 0.001)
     g_tol::Float64 = 1e-15
+    t::Float64 = 1
 end
 
 function setOptions!(opt::ModifiedBFGSOptimizer; 
@@ -84,20 +85,22 @@ function (opt::ModifiedBFGSOptimizer)(f::Function, g!::Function, x0::Array{Float
 
         mt = β[1] * mt + (1 - β[1]) * G
         vt = β[2] * vt + (1 - β[2]) * G.^2
-        Δ =  @. mt / (1 - βp[1]) / (√(vt / (1 - βp[2])) + ϵ) 
-        Δ =  @. mt / (1 - βp[1]) 
+        # Δ =  @. mt / (1 - βp[1]) / (√(vt / (1 - βp[2])) + ϵ) 
+        Δ =  mt 
         βp = βp .* β
         
-        s = x - x_
-        y = Δ - Δ_ 
-
         # s = x - x_
-        # y = G - G_
+        # y = Δ - Δ_ 
+
+        s = x - x_
+        V = @. √(vt / (1 - βp[2]))
+        # y = G - G_ + opt.t * diagm(0=>V)*s
+        y = G - G_ 
+
 
         B = (I - s*y'/(y'*s)) * B * (I - y*s'/(y'*s)) + s*s'/(y'*s)
-        d = - B*G
         # d = - B*G
-
+        d = - B * G 
         
         # line search 
         φ = α->f(x + α*d)
@@ -112,13 +115,14 @@ function (opt::ModifiedBFGSOptimizer)(f::Function, g!::Function, x0::Array{Float
         
         α0 = min(10.0, 10α)
         res = BackTracking()(φ, dφ, φdφ, α0, φ0,dφ0)
+        
         α = res[1]
         
-
-        if abs(α)<1e-15
+        if abs(res[1])<1e-15
             @warn "Step size too small"
             return losses 
         end
+
 
         xnew = x + α * d
         @. G_ = G
@@ -127,8 +131,6 @@ function (opt::ModifiedBFGSOptimizer)(f::Function, g!::Function, x0::Array{Float
         x, x_ = xnew, x 
         f__, f_ = fnew, f__
         Δ_ = Δ
-        vt_ = vt
-
         
         # check for convergence 
         if norm(G)<opt.g_tol || isnan(f__)

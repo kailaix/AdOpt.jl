@@ -7,6 +7,8 @@ julia lbfgs.jl $SEED &
 julia ncg.jl $SEED &
 julia ncgbfgs.jl $SEED &
 julia adaptive_bfgs.jl $SEED &
+julia modified_bfgs.jl $SEED &
+
 wait 
 julia plot.jl $SEED 
 done 
