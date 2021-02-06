@@ -122,11 +122,11 @@ function optimize(f, c::AbstractConstraints, initial_x::AbstractArray, method::A
     optimize(d, c, initial_x, method, options)
 end
 function optimize(f, g, initial_x::AbstractArray, method::AbstractOptimizer,
-         options::Options = Options(;default_options(method)...); inplace = true, autodiff = :finite)
+         options::Options = Options(;default_options(method)...); inplace = true, autodiff = :finite, step_callback = missing)
 
     d = promote_objtype(method, initial_x, autodiff, inplace, f, g)
 
-    optimize(d, initial_x, method, options)
+    optimize(d, initial_x, method, options; step_callback = step_callback)
 end
 function optimize(f, g, h, initial_x::AbstractArray{T}, method::AbstractOptimizer,
          options::Options = Options(;default_options(method)...); inplace = true, autodiff = :finite) where T

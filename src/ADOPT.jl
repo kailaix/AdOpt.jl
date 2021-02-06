@@ -16,6 +16,7 @@ documentation online at http://julianlsolvers.github.io/ADOPT.jl/stable/ .
 """
 module ADOPT
 using ADCME
+using PyCall
 using Compat
 using NLSolversBase          # for shared infrastructure in JuliaNLSolvers
 

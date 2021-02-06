@@ -29,7 +29,7 @@ initial_convergence(d, state, method::ZerothOrderOptimizer, initial_x, options) 
 
 function optimize(d::D, initial_x::Tx, method::M,
                   options::Options{T, TCallback} = Options(;default_options(method)...),
-                  state = initial_state(method, options, d, initial_x)) where {D<:AbstractObjective, M<:AbstractOptimizer, Tx <: AbstractArray, T, TCallback}
+                  state = initial_state(method, options, d, initial_x); step_callback = missing) where {D<:AbstractObjective, M<:AbstractOptimizer, Tx <: AbstractArray, T, TCallback}
     if length(initial_x) == 1 && typeof(method) <: NelderMead
         error("You cannot use NelderMead for univariate problems. Alternatively, use either interval bound univariate optimization, or another method such as BFGS or Newton.")
     end
@@ -51,10 +51,20 @@ function optimize(d::D, initial_x::Tx, method::M,
     _time = time()
     trace!(tr, d, state, iteration, method, options, _time-t0)
     ls_success::Bool = true
+
+    if !ismissing(step_callback)
+        step_callback(state.f_x_previous)
+    end
+
     while !converged && !stopped && iteration < options.iterations
         iteration += 1
 
         ls_success = !update_state!(d, state, method)
+        
+        if !ismissing(step_callback)
+            step_callback(state.f_x_previous)
+        end
+
         if !ls_success
             break # it returns true if it's forced by something in update! to stop (eg dx_dg == 0.0 in BFGS, or linesearch errors)
         end
